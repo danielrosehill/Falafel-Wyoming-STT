@@ -1,0 +1,13 @@
+services:
+  falafel-wyoming:
+    build: .
+    image: falafel-wyoming:local
+    container_name: falafel-wyoming
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - "10.0.0.2:10300:10300"
+    volumes:
+      - ./models:/models:ro
+    mem_limit: 3g
+    cpus: 8
