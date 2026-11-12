@@ -23,3 +23,24 @@ docker compose up -d --build
 ```bash
 uv run --with wyoming scripts/test_client.py HOST 10300 sample.wav
 ```
+
+## Measured (residencehome, 16-core CPU, no GPU, 2026-11-12)
+
+Falafel 0.6B int8, 8 threads. Input was Kokoro-generated speech, so this checks plumbing and speed, not accuracy on a
+real voice in a room.
+
+| Audio | Decode | Transcript |
+|---|---|---|
+| 3.01 s | 0.12 s | Turn the living room AC up to 24 degrees. |
+| 2.71 s | 0.15 s | Send an email to Hannah saying I will be home late. |
+| 3.20 s | 0.14 s | Create a new private repo called Voice Agent Tests. |
+| 1.73 s | 0.17 s | What's on my calendar tomorrow. |
+
+## Deployment (Daniel's)
+
+- residencehome stack `falafel-wyoming` in `~/deployments` (submodule of Residencehome-Deployments), `10.0.0.2:10300`,
+  LAN only, no auth. Models fetched on the host with `with-secrets scripts/fetch-models.sh` (HF_TOKEN from Infisical).
+- Home Assistant 10.0.0.3: Wyoming entry `falafel` (entity `stt.falafel`), added 2026-11-12. Used by the pipeline
+  "Hey Yossi" (id `01m789tt8jbtvqv9y23bq8e217`): stt.falafel → conversation → tts.kokoro.
+- Part of the voice pipeline in [Hey-Yossi-Voice-Satellite](https://github.com/danielrosehill/Hey-Yossi-Voice-Satellite)
+  (private).
